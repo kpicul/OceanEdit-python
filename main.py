@@ -23,7 +23,7 @@ class MainWindow(QMainWindow):
 
     def open_file(self):
         try:
-            file_path, _ = open_file_dialog(self, "Select file", "")
+            file_path = open_file_dialog(self, "Select file", "")
             content: str = read_file(file_path)
             if str is not None:
                 self.main_area.setPlainText(content)
