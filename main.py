@@ -8,6 +8,13 @@ import sys
 
 
 class MainWindow(QMainWindow):
+    """Main window class.
+
+    Attributes:
+        main_area (QPlainTextEdit): Main text area.
+        action_open (QAction): Action that activates open function
+    """
+
     def __init__(self):
         super(MainWindow, self).__init__()
         uic.loadUi("forms/mainWindow.ui", self)
@@ -19,9 +26,13 @@ class MainWindow(QMainWindow):
         self.show()
 
     def set_events(self):
+        """Sets the main window events.
+        """
         self.action_open.triggered.connect(self.open_file)
 
     def open_file(self):
+        """Opens file in main area.
+        """
         try:
             file_path = open_file_dialog(self, "Select file", "")
             content: str = read_file(file_path)
