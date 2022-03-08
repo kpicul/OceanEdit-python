@@ -8,7 +8,21 @@ def read_file(file_path: str) -> str:
         str: Content of the file.
 
     """
-    file = open(file_path)
-    content: str = file.read()
+    with open(file_path, "rb") as file:
+        contents = file.read()
     file.close()
-    return content
+
+    return contents.decode("utf-8", "ignore")
+
+
+def write_file(file_path: str, file_content: str):
+    """Writes the content into the file.
+
+    Args:
+        file_path (str): Path to the file that will be written into.
+        file_content (str): Content that will be written into file.
+
+    """
+    file = open(file_path, "w")
+    file.write(file_content)
+    file.close()
