@@ -13,8 +13,11 @@ class MainWindow(QMainWindow):
 
     Attributes:
         main_area (QPlainTextEdit): Main text area.
-        action_open (QAction): Action that activates open function
-
+        action_open (QAction): Action that activates open function.
+        action_save (QAction): Action that saves file.
+        action_copy (QAction): Action that activates copy function.
+        action_paste (QAction): Action that activates paste function.
+        action_cut (QAction): Action that activates cut function.
     """
 
     def __init__(self):
@@ -24,6 +27,9 @@ class MainWindow(QMainWindow):
 
         self.action_open: QAction = self.findChild(QAction, "actionOpen")
         self.action_save: QAction = self.findChild(QAction, "actionSave")
+        self.action_copy: QAction = self.findChild(QAction, "actionCopy")
+        self.action_paste: QAction = self.findChild(QAction, "actionPaste")
+        self.action_cut: QAction = self.findChild(QAction, "actionCut")
 
         self.set_events()
         self.show()
@@ -32,6 +38,9 @@ class MainWindow(QMainWindow):
         """Sets the main window events."""
         self.action_open.triggered.connect(self.open_file)
         self.action_save.triggered.connect(self.save_file)
+        self.action_copy.triggered.connect(self.main_area.copy)
+        self.action_paste.triggered.connect(self.main_area.paste)
+        self.action_cut.triggered.connect(self.main_area.cut)
 
     def open_file(self):
         """Opens file in main area."""
@@ -52,6 +61,8 @@ class MainWindow(QMainWindow):
                 write_file(file_path, content)
         except:
             show_error_dialog(traceback.format_exc())
+
+
 
 
 app = QApplication(sys.argv)
