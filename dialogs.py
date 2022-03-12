@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QFileDialog, QWidget, QErrorMessage, QDialog
+from PyQt6.QtWidgets import QFileDialog, QWidget, QErrorMessage
 from open_dialog_mode import OpenDialogMode
 from about_window import AboutWindow
 
