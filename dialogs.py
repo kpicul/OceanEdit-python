@@ -1,5 +1,6 @@
-from PyQt6.QtWidgets import QFileDialog, QWidget, QErrorMessage
+from PyQt6.QtWidgets import QFileDialog, QWidget, QErrorMessage, QDialog
 from open_dialog_mode import OpenDialogMode
+from about_window import AboutWindow
 
 
 def open_file_dialog(parent: QWidget, dialog_title: str, mode: OpenDialogMode, file_filter: str = "") -> str:
@@ -34,3 +35,9 @@ def show_error_dialog(error_content: str):
     error_dialog = QErrorMessage()
     error_dialog.showMessage(error_content)
     error_dialog.exec()
+
+
+def show_about_dialog():
+    """Opens about window."""
+    about_dialog = AboutWindow()
+    about_dialog.exec()
