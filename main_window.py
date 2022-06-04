@@ -13,8 +13,10 @@ class MainWindow(QMainWindow):
 
     Attributes:
         editor_tabs (QTabWidget): Tab widget that contains open editors.
+        action_new_file (QAction): Action that creates new empty file tab.
         action_open (QAction): Action that activates open function.
         action_save (QAction): Action that saves file.
+        action_save_as (QAction): Action that saves file with designated name to designated location.
         action_copy (QAction): Action that activates copy function.
         action_paste (QAction): Action that activates paste function.
         action_cut (QAction): Action that activates cut function.
