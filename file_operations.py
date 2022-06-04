@@ -1,3 +1,4 @@
+# File operations
 def read_file(file_path: str) -> str:
     """Reads the file with given file path.
 
@@ -26,3 +27,15 @@ def write_file(file_path: str, file_content: str):
     file = open(file_path, "w")
     file.write(file_content)
     file.close()
+
+
+def get_file_name(file_path: str):
+    """Gets the file name from provided file path
+
+    Args:
+        file_path (str): Path of the file.
+
+    Returns:
+        str: Name of the file.
+    """
+    return file_path.split('/')[-1]

@@ -2,7 +2,7 @@ import traceback
 from PyQt6.QtWidgets import QMainWindow, QTabWidget
 from PyQt6.QtGui import QAction
 from PyQt6 import uic
-from file_operations import read_file, write_file
+from file_operations import read_file, write_file, get_file_name
 from dialogs import open_file_dialog, show_error_dialog, show_about_dialog
 from open_dialog_mode import OpenDialogMode
 from text_area import TextArea
@@ -52,7 +52,7 @@ class MainWindow(QMainWindow):
         try:
             file_path = open_file_dialog(self, "Select file", OpenDialogMode.OPEN, "")
             if len(file_path) != 0:
-                new_text_area = self.add_new_tab(file_path)
+                new_text_area = self.add_new_tab(get_file_name(file_path))
                 new_text_area.set_content(file_path)
         except FileNotFoundError:
             show_error_dialog(traceback.format_exc())
@@ -78,6 +78,7 @@ class MainWindow(QMainWindow):
         new_text_area = TextArea()
         self.editor_tabs.addTab(new_text_area, file_name)
         self.editor_tabs.setCurrentWidget(new_text_area)
+
         return new_text_area
 
     def get_current_tab(self) -> TextArea:
