@@ -29,17 +29,17 @@ class TextArea(QWidget):
         content: str = read_file(file_path)
         self.editor_area.setPlainText(content)
 
-    def save_content(self, new_file: bool = False, file_path: str = ""):
+    def save_content(self, save_as: bool = False, file_path: str = ""):
         """Saves the content of the file and if it is a new file sets the file path.
 
         Args:
-            new_file (bool): if it is a new file. False by default.
+            save_as (bool): if it is a save as operation. False by default.
             file_path (str): path of the file.
         """
-        if new_file:
+        if save_as:
             self.file_path = file_path
         content: str = self.editor_area.toPlainText()
-        write_file(file_path, content)
+        write_file(self.file_path, content)
 
     def copy_operation(self):
         """Performs copy operation."""

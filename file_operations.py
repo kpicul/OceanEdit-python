@@ -29,8 +29,8 @@ def write_file(file_path: str, file_content: str):
     file.close()
 
 
-def get_file_name(file_path: str):
-    """Gets the file name from provided file path
+def get_file_name(file_path: str) -> str:
+    """Gets the file name from provided file path.
 
     Args:
         file_path (str): Path of the file.
@@ -38,4 +38,7 @@ def get_file_name(file_path: str):
     Returns:
         str: Name of the file.
     """
+    if len(file_path) == 0:
+        raise ValueError("Invalid file path")
+
     return file_path.split('/')[-1]

@@ -2,7 +2,7 @@ import traceback
 from PyQt6.QtWidgets import QMainWindow, QTabWidget
 from PyQt6.QtGui import QAction
 from PyQt6 import uic
-from file_operations import read_file, write_file, get_file_name
+from file_operations import get_file_name
 from dialogs import open_file_dialog, show_error_dialog, show_about_dialog
 from open_dialog_mode import OpenDialogMode
 from text_area import TextArea
@@ -28,8 +28,10 @@ class MainWindow(QMainWindow):
         self.editor_tabs: QTabWidget = self.findChild(QTabWidget, "editorTabs")
 
         # Actions
+        self.action_new_file: QAction = self.findChild(QAction, "actionNewFile")
         self.action_open: QAction = self.findChild(QAction, "actionOpen")
         self.action_save: QAction = self.findChild(QAction, "actionSave")
+        self.action_save_as: QAction = self.findChild(QAction, "actionSaveAs")
         self.action_copy: QAction = self.findChild(QAction, "actionCopy")
         self.action_paste: QAction = self.findChild(QAction, "actionPaste")
         self.action_cut: QAction = self.findChild(QAction, "actionCut")
@@ -40,12 +42,17 @@ class MainWindow(QMainWindow):
 
     def set_events(self):
         """Sets the main window events."""
+        self.action_new_file.triggered.connect(self.open_new_tab)
         self.action_open.triggered.connect(self.open_file)
         self.action_save.triggered.connect(self.save_file)
+        self.action_save_as.triggered.connect(lambda: self.save_file(True))
         self.action_copy.triggered.connect(self.copy_operation)
         self.action_paste.triggered.connect(self.paste_operation)
         self.action_cut.triggered.connect(self.cut_operation)
         self.action_about.triggered.connect(show_about_dialog)
+
+    def open_new_tab(self):
+        self.add_new_tab()
 
     def open_file(self):
         """Opens file in main area."""
@@ -57,16 +64,21 @@ class MainWindow(QMainWindow):
         except FileNotFoundError:
             show_error_dialog(traceback.format_exc())
 
-    def save_file(self):
+    def save_file(self, save_as: bool = False):
         """Opens save file dialog and saves file"""
         try:
-            file_path = open_file_dialog(self, "Select file", OpenDialogMode.WRITE)
-            if len(file_path) != 0:
-                self.get_current_tab().save_content(True, file_path)
+            current_tab = self.get_current_tab()
+            if save_as or len(current_tab.file_path) == 0:
+                file_path = open_file_dialog(self, "Select file", OpenDialogMode.WRITE)
+                if len(file_path) != 0:
+                    current_tab.save_content(True, file_path)
+                    self.editor_tabs.setTabText(self.editor_tabs.currentIndex(), get_file_name(file_path))
+            else:
+                self.get_current_tab().save_content()
         except FileNotFoundError:
             show_error_dialog(traceback.format_exc())
 
-    def add_new_tab(self, file_name: str = "new file") -> TextArea:
+    def add_new_tab(self, file_name: str = "untitled") -> TextArea:
         """Adds new tab and sets it as selected.
 
         Args:
