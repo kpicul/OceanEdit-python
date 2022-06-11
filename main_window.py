@@ -62,6 +62,7 @@ class MainWindow(QMainWindow):
         self.action_about.triggered.connect(show_about_dialog)
         self.action_close.triggered.connect(self.close)
         self.editor_tabs.tabCloseRequested.connect(lambda: self.editor_tabs.removeTab(self.editor_tabs.currentIndex()))
+        self.editor_tabs.currentChanged.connect(self.set_status_bar_info)
 
     def open_file(self):
         """Opens file in main area."""
@@ -100,6 +101,7 @@ class MainWindow(QMainWindow):
         self.editor_tabs.addTab(new_text_area, file_name)
         self.editor_tabs.setCurrentWidget(new_text_area)
         new_text_area.editor_area.cursorPositionChanged.connect(self.set_status_bar_info)
+        self.set_status_bar_info()
 
         return new_text_area
 
