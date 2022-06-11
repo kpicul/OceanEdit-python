@@ -38,6 +38,7 @@ class MainWindow(QMainWindow):
         self.action_paste: QAction = self.findChild(QAction, "actionPaste")
         self.action_cut: QAction = self.findChild(QAction, "actionCut")
         self.action_about: QAction = self.findChild(QAction, "actionAbout")
+        self.action_close: QAction = self.findChild(QAction, "actionClose")
 
         self.set_events()
         self.show()
@@ -52,6 +53,7 @@ class MainWindow(QMainWindow):
         self.action_paste.triggered.connect(self.paste_operation)
         self.action_cut.triggered.connect(self.cut_operation)
         self.action_about.triggered.connect(show_about_dialog)
+        self.action_close.triggered.connect(self.close)
 
     def open_new_tab(self):
         self.add_new_tab()
