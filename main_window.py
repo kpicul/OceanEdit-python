@@ -20,6 +20,7 @@ class MainWindow(QMainWindow):
         action_copy (QAction): Action that activates copy function.
         action_paste (QAction): Action that activates paste function.
         action_cut (QAction): Action that activates cut function.
+        action_close (QAction): Action that closes the application.
     """
 
     def __init__(self):
@@ -40,6 +41,8 @@ class MainWindow(QMainWindow):
         self.action_about: QAction = self.findChild(QAction, "actionAbout")
         self.action_close: QAction = self.findChild(QAction, "actionClose")
 
+        self.editor_tabs.setTabsClosable(True)
+
         self.set_events()
         self.show()
 
@@ -54,6 +57,7 @@ class MainWindow(QMainWindow):
         self.action_cut.triggered.connect(self.cut_operation)
         self.action_about.triggered.connect(show_about_dialog)
         self.action_close.triggered.connect(self.close)
+        self.editor_tabs.tabCloseRequested.connect(lambda: self.editor_tabs.removeTab(self.editor_tabs.currentIndex()))
 
     def open_new_tab(self):
         self.add_new_tab()
