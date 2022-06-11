@@ -21,6 +21,8 @@ class MainWindow(QMainWindow):
         action_paste (QAction): Action that activates paste function.
         action_cut (QAction): Action that activates cut function.
         action_close (QAction): Action that closes the application.
+        line_number_label (QLabel): Label that shows current line in which the cursor is.
+        column_number_label (QLabel): Label that shows current column in which the cursor is.
     """
 
     def __init__(self):
