@@ -52,3 +52,19 @@ class TextArea(QWidget):
     def cut_operation(self):
         """Performs cut operation."""
         self.editor_area.cut()
+
+    def get_cursor_column(self) -> int:
+        """Returns the current column number in which the cursor is.
+
+        Returns:
+            (int): Current column number.
+        """
+        return self.editor_area.textCursor().columnNumber() + 1
+
+    def get_cursor_line(self) -> int:
+        """Returns the current line number in which the cursor is.
+
+        Returns:
+            (int): Current line number.
+        """
+        return self.editor_area.textCursor().blockNumber() + 1

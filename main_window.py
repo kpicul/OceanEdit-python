@@ -1,5 +1,5 @@
 import traceback
-from PyQt6.QtWidgets import QMainWindow, QTabWidget
+from PyQt6.QtWidgets import QMainWindow, QTabWidget, QLabel
 from PyQt6.QtGui import QAction
 from PyQt6 import uic
 from file_operations import get_file_name
@@ -40,6 +40,10 @@ class MainWindow(QMainWindow):
         self.action_cut: QAction = self.findChild(QAction, "actionCut")
         self.action_about: QAction = self.findChild(QAction, "actionAbout")
         self.action_close: QAction = self.findChild(QAction, "actionClose")
+
+        # Status bar labels
+        self.line_number_label: QLabel = self.findChild(QLabel, "lineCountLabel")
+        self.column_number_label: QLabel = self.findChild(QLabel, "columnCountLabel")
 
         self.editor_tabs.setTabsClosable(True)
 
@@ -95,6 +99,7 @@ class MainWindow(QMainWindow):
         new_text_area = TextArea()
         self.editor_tabs.addTab(new_text_area, file_name)
         self.editor_tabs.setCurrentWidget(new_text_area)
+        new_text_area.editor_area.cursorPositionChanged.connect(self.set_status_bar_info)
 
         return new_text_area
 
@@ -116,3 +121,9 @@ class MainWindow(QMainWindow):
 
     def cut_operation(self):
         self.get_current_tab().cut_operation()
+
+    def set_status_bar_info(self):
+        line_number: int = self.get_current_tab().get_cursor_line()
+        column_number: int = self.get_current_tab().get_cursor_column()
+        self.line_number_label.setText(str(line_number))
+        self.column_number_label.setText(str(column_number))
