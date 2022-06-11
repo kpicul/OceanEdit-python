@@ -48,7 +48,7 @@ class MainWindow(QMainWindow):
 
     def set_events(self):
         """Sets the main window events."""
-        self.action_new_file.triggered.connect(self.open_new_tab)
+        self.action_new_file.triggered.connect(lambda: self.add_new_tab())
         self.action_open.triggered.connect(self.open_file)
         self.action_save.triggered.connect(self.save_file)
         self.action_save_as.triggered.connect(lambda: self.save_file(True))
@@ -58,9 +58,6 @@ class MainWindow(QMainWindow):
         self.action_about.triggered.connect(show_about_dialog)
         self.action_close.triggered.connect(self.close)
         self.editor_tabs.tabCloseRequested.connect(lambda: self.editor_tabs.removeTab(self.editor_tabs.currentIndex()))
-
-    def open_new_tab(self):
-        self.add_new_tab()
 
     def open_file(self):
         """Opens file in main area."""
