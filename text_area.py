@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QWidget, QPlainTextEdit
+from PyQt6.QtWidgets import QWidget, QPlainTextEdit, QLabel
 from PyQt6 import uic
 from file_operations import read_file, write_file
 
@@ -17,6 +17,7 @@ class TextArea(QWidget):
 
         # Setting the properties.
         self.editor_area: QPlainTextEdit = self.findChild(QPlainTextEdit, "editorArea")
+        self.line_number_area: QPlainTextEdit = self.findChild(QPlainTextEdit, "lineNumberArea")
         self.file_path: str = ""
 
     def set_content(self, file_path: str):
@@ -28,6 +29,7 @@ class TextArea(QWidget):
         self.file_path = file_path
         content: str = read_file(file_path)
         self.editor_area.setPlainText(content)
+        self.set_line_numbers()
 
     def save_content(self, save_as: bool = False, file_path: str = ""):
         """Saves the content of the file and if it is a new file sets the file path.
@@ -68,3 +70,11 @@ class TextArea(QWidget):
             (int): Current line number.
         """
         return self.editor_area.textCursor().blockNumber() + 1
+    
+    def set_line_numbers(self):
+        line_number_count: int = self.editor_area.blockCount() + 1
+        line_count_text: str = ""
+        for i in range(1, line_number_count):
+            line_count_text += str(i) + "\n"
+
+        self.line_number_area.setPlainText(line_count_text)
