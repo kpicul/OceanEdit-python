@@ -1,4 +1,6 @@
 from PyQt6.QtWidgets import QWidget, QPlainTextEdit, QLabel
+from PyQt6.QtGui import QTextBlock, QPainter, QPaintEvent, QColor
+from PyQt6.QtCore import Qt
 from PyQt6 import uic
 from file_operations import read_file, write_file
 
@@ -17,8 +19,10 @@ class TextArea(QWidget):
 
         # Setting the properties.
         self.editor_area: QPlainTextEdit = self.findChild(QPlainTextEdit, "editorArea")
-        self.line_number_area: QPlainTextEdit = self.findChild(QPlainTextEdit, "lineNumberArea")
+        self.line_number_area: QWidget = self.findChild(QPlainTextEdit, "lineNumberArea")
         self.file_path: str = ""
+
+        self.editor_area.blockCountChanged.connect(self.set_line_numbers)
 
     def set_content(self, file_path: str):
         """Sets the area content.
@@ -71,10 +75,20 @@ class TextArea(QWidget):
         """
         return self.editor_area.textCursor().blockNumber() + 1
     
-    def set_line_numbers(self):
-        line_number_count: int = self.editor_area.blockCount() + 1
-        line_count_text: str = ""
-        for i in range(1, line_number_count):
-            line_count_text += str(i) + "\n"
-
-        self.line_number_area.setPlainText(line_count_text)
+    def set_line_numbers(self, event: QPaintEvent):
+        painter = QPainter(self.line_number_area)
+        block = self.editor_area.firstVisibleBlock()
+        block_number: int = block.blockNumber()
+        top: int = round(self.editor_area.blockBoundingGeometry(block)
+                         .translated(self.editor_area.contentOffset()).top())
+        bottom: int = top + round(self.editor_area.blockBoundingRect(block).height())
+        while block.isValid() and top <= event.rect().bottom():
+            if block.isVisible() and bottom >= event.rect().top():
+                number: str = str(block_number + 1)
+                painter.setPen(QColor.black)
+                painter.drawText(0, top, self.line_number_area.width(), self.editor_area.fontMetrics().height(),
+                                 Qt.AlignmentFlag.AlignRight, number)
+            block = block.next()
+            top = bottom
+            bottom = top + round(self.editor_area.blockBoundingRect(block).height())
+            block_number += 1
